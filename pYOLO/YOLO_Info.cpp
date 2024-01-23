@@ -21,7 +21,7 @@ void showSynopsis()
   blk("SYNOPSIS:                                                       ");
   blk("------------------------------------                            ");
   blk("  The pYOLO application is used for yolo object detection.  ");
-  blk(" this program will detect MOB and push the bounding box to moosDB ");
+  blk(" this program will detect object and push the bounding box to moosDB ");
   blk("                                                                ");
   blk("                                                                ");
   blk("                                                                ");

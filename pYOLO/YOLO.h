@@ -72,7 +72,7 @@ class YOLO : public AppCastingMOOSApp
 
  private: // State variables
   bool found;
-  YOLOBox mob_box;
+  YOLOBox box;
   double confidence;
 };
 

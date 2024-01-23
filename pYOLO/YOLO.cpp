@@ -25,7 +25,7 @@ using namespace std;
 
 //---------------------------------------------------------
 // Constructor()
-#define MOB_CLASS 0
+#define CLASS 0
 #define PERSON_CLASS 0
 #define LIFEVEST_CLASS 0
 
@@ -33,7 +33,7 @@ using namespace std;
 
 YOLO::YOLO()
 {
-  mob_box = YOLOBox();
+  box = YOLOBox();
 }
 
 //---------------------------------------------------------
@@ -88,9 +88,9 @@ bool YOLO::OnConnectToServer()
 //---------------------------------------------------------
 // Procedure: CoordsFIFOThread()
 //            handle the incoming data from the python YOLO detector
-static std::mutex g_mob_box_mutex;
+static std::mutex g_box_mutex;
 
-static YOLOBox g_mob_box{};
+static YOLOBox g_box{};
 
 static void CoordsFIFOThread()
 {
@@ -125,9 +125,9 @@ static void CoordsFIFOThread()
 
         switch (fifo_box.GetLabel())
         {
-        case MOB_CLASS:
-          const std::lock_guard<std::mutex> lock{g_mob_box_mutex};
-          g_mob_box = fifo_box;
+        case CLASS:
+          const std::lock_guard<std::mutex> lock{g_box_mutex};
+          g_box = fifo_box;
           break;
         default:
           std::cerr << "Unknown Classification Label: " << fifo_box.GetLabel() << std::endl;
@@ -150,14 +150,14 @@ bool YOLO::Iterate()
   AppCastingMOOSApp::Iterate();
 
   // Do your thing here!
-  const std::lock_guard<std::mutex> lock{g_mob_box_mutex};
-  mob_box = g_mob_box;
+  const std::lock_guard<std::mutex> lock{g_box_mutex};
+  box = g_box;
   
-  bool detected = mob_box.GetAgeSeconds() < MAX_FIFO_AGE;
-  Notify("MOB_BOX_X", mob_box.BoxX());
-  Notify("MOB_BOX_Y", mob_box.BoxY());
-  Notify("MOB_DETECTED", detected);
-  Notify("MOB_AGE", mob_box.GetAgeSeconds());
+  bool detected = box.GetAgeSeconds() < MAX_FIFO_AGE;
+  Notify("BOX_X", box.BoxX());
+  Notify("BOX_Y", box.BoxY());
+  Notify("DETECTED", detected);
+  Notify("AGE", box.GetAgeSeconds());
 
   // AppCastingMOOSApp::PostReport(); 
   return (true);
