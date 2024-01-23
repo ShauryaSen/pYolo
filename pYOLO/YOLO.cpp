@@ -24,10 +24,7 @@ using namespace std;
 
 
 //---------------------------------------------------------
-// Constructor()
-#define CLASS 0
-#define PERSON_CLASS 0
-#define LIFEVEST_CLASS 0
+
 
 #define MAX_FIFO_AGE 0.5
 
@@ -94,10 +91,11 @@ static YOLOBox g_box{};
 
 static void CoordsFIFOThread()
 {
+  // CHANGE THESE VALUES
   const std::string input_source = "0";
-  const std::string weights = "src/pYOLO/yolo/custom_models/best.pt";
-  const std::string python = "/Users/shauryasen/moos-ivp-shaurya/.venv/bin/python3";
-  const std::string dir = "src/pYOLO/yolo";
+  const std::string weights = "pYOLO/yolo/custom_models/your_model";
+  const std::string python = "/your_dir/python3";
+  const std::string dir = "pYOLO/yolo";
   const std::string python_script = dir + "detect.py";
   const std::string requirements = dir + "requirements.txt";
 
@@ -107,7 +105,7 @@ static void CoordsFIFOThread()
   FILE* python_program = popen(command.c_str(), "r");
 
   if (python_program == nullptr) {
-    std::cerr << "popen() failed! 😅😅" << std::endl;
+    std::cerr << "popen() failed!" << std::endl;
     return;
   }
 
